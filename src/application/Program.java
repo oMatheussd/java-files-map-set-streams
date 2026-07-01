@@ -84,24 +84,28 @@ public class Program {
 
 			System.out.println();
 			System.out.println("Leitor com maior tempo de empréstimo:");
-
-			String reader = "";
-			int maxDays = 0;
-
-			for (String readerName : totalDaysByReader.keySet()) {
-				int totalDays = totalDaysByReader.get(readerName);
-				if (totalDays > maxDays) {
-					maxDays = totalDays;
-					reader = readerName;
-				}
-			}
-
-			System.out.println(reader + " - " + maxDays + " dias");
+			System.out.println(findTopReader(totalDaysByReader));
 
 		} catch (IOException e) {
 			System.out.println("Erro: " + e.getMessage());
 		}
 
 		sc.close();
+	}
+
+	public static String findTopReader(Map<String, Integer> totalDaysByReader) {
+
+		String reader = "";
+		int maxDays = 0;
+
+		for (String readerName : totalDaysByReader.keySet()) {
+			int totalDays = totalDaysByReader.get(readerName);
+			if (totalDays > maxDays) {
+				maxDays = totalDays;
+				reader = readerName;
+			}
+		}
+
+		return reader + " - " + maxDays + " dias";
 	}
 }
