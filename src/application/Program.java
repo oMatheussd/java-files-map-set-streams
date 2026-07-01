@@ -41,49 +41,45 @@ public class Program {
 			}
 
 			for (Loan loan : loans) {
-				readers.add(loan.getReadersName());
+
+				String readerName = loan.getReadersName();
+				String genre = loan.getGenre();
+
+				readers.add(readerName);
+
+				books.add(loan.getBookTitle());
+
+				if (daysByGenre.containsKey(genre)) {
+					int totalDays = daysByGenre.get(genre);
+					daysByGenre.put(genre, loan.getLoanDays() + totalDays);
+				} else {
+					daysByGenre.put(genre, loan.getLoanDays());
+				}
+
+				if (totalDaysByReader.containsKey(readerName)) {
+					int totalDays = totalDaysByReader.get(readerName);
+					totalDaysByReader.put(readerName, loan.getLoanDays() + totalDays);
+				} else {
+					totalDaysByReader.put(readerName, loan.getLoanDays());
+				}
+
 			}
 
 			System.out.println("Quantidade de leitores: " + readers.size());
 
-			double avg = loans.stream()
-					.mapToInt(loan -> loan.getLoanDays())
-					.average()
-					.orElse(0.0);
+			double avg = loans.stream().mapToInt(loan -> loan.getLoanDays()).average().orElse(0.0);
 
 			System.out.println();
 			System.out.printf("Tempo médio dos empréstimos: %.2f dias%n", avg);
-
-			for (Loan loan : loans) {
-				books.add(loan.getBookTitle());
-			}
 
 			System.out.println();
 			System.out.println("Livros emprestados:");
 			books.forEach(System.out::println);
 
-			for (Loan loan : loans) {
-				if (daysByGenre.containsKey(loan.getGenre())) {
-					int totalDays = daysByGenre.get(loan.getGenre());
-					daysByGenre.put(loan.getGenre(), loan.getLoanDays() + totalDays);
-				} else {
-					daysByGenre.put(loan.getGenre(), loan.getLoanDays());
-				}
-			}
-
 			System.out.println();
 			System.out.println("Dias por gênero:");
 			for (String genre : daysByGenre.keySet()) {
 				System.out.println(genre + ": " + daysByGenre.get(genre));
-			}
-
-			for (Loan loan : loans) {
-				if (totalDaysByReader.containsKey(loan.getReadersName())) {
-					int totalDays = totalDaysByReader.get(loan.getReadersName());
-					totalDaysByReader.put(loan.getReadersName(), loan.getLoanDays() + totalDays);
-				} else {
-					totalDaysByReader.put(loan.getReadersName(), loan.getLoanDays());
-				}
 			}
 
 			System.out.println();
